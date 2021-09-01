@@ -1,82 +1,97 @@
-import Head from 'next/head'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Head from "next/head";
+
+import CurrentCityData from "../components/CurrentCityData";
+import WeekData from "../components/WeekData";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
+  const [cityName, setCityName] = useState("");
+  const [cityData, setCityData] = useState(null);
+  const [weekData, setWeekData] = useState(null);
+
+  const getCurrentData = async (cityName) => {
+    console.log(cityName);
+    try {
+      const response = await axios.get(
+        `http://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_API_KEY}&q=${cityName}&aqi=no`
+      );
+      setCityData(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getWeeklyInfo = async () => {
+    try {
+      const week = await axios.get(
+        `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_API_KEY}&q=${cityName}&days=5&aqi=no&alerts=no`
+      );
+      setWeekData(week);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    getWeeklyInfo(cityName);
+    setCityName("");
+    console.log(cityData);
+  };
+  console.log(cityData);
+  console.log(weekData);
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className=" min-h-screen p-3 bg-blue-100">
       <Head>
-        <title>Create Next App</title>
+        <title>Weatherly 2.0</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+      <main className="h-screen  m-1 rounded-xl p-3 flex-col font-roboto ">
+        <div className=" h-2/5 bg-blue-400 rounded-md shadow-md mb-5 ">
+          <form className="relative" onSubmit={submitHandler}>
+            <input
+              type="text"
+              className="mt-3  p-2  ml-10 rounded-md shadow-md text-center placeholder-blue-700 placeholder-opacity-50 focus:placeholder-transparent focus:outline-none text-blue-400"
+              placeholder="Enter City"
+              onChange={(event) => setCityName(event.target.value)}
+            />
+            <button
+              type="submit"
+              className="relative left-2 bg-white w-10 h-10 rounded-md shadow-sm"
+            >
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          </form>
+          {!weekData ? (
+            <h1 className=" text-center bg-white p-1 w-4/6 h-1/4 rounded-md mt-3  ml-10 shadow-lg  align-middle text-2xl  ">
+              {" "}
+              Please enter <br /> a city
+            </h1>
+          ) : (
+            <CurrentCityData data={weekData} />
+          )}
+        </div>
+        <div className="h-3/5 bg-blue-400 p-3 rounded-md shadow-md">
+          {!weekData ? (
+            <h1 className="bg-white p-5 w-4/6 rounded-md  mx-auto  text-center shadow-lg   ">
+              {" "}
+              No Data Available
+            </h1>
+          ) : (
+            <WeekData data={weekData} />
+          )}
         </div>
       </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
     </div>
-  )
+  );
 }
