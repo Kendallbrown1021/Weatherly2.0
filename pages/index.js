@@ -16,7 +16,7 @@ export default function Home() {
     console.log(cityName);
     try {
       const response = await axios.get(
-        `http://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_API_KEY}&q=${cityName}&aqi=no`
+        `https://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_API_KEY}&q=${cityName}&aqi=no`
       );
       setCityData(response);
     } catch (err) {
@@ -27,7 +27,7 @@ export default function Home() {
   const getWeeklyInfo = async () => {
     try {
       const week = await axios.get(
-        `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_API_KEY}&q=${cityName}&days=5&aqi=no&alerts=no`
+        `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_API_KEY}&q=${cityName}&days=5&aqi=no&alerts=no`
       );
       setWeekData(week);
     } catch (err) {
