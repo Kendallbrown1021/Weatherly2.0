@@ -1,15 +1,20 @@
 import React from "react";
-
-const WeekData = ({ data }) => {
-  const { current, forecast } = data.data;
+import { dayOfWeek } from "../utils/getDayOfWeek";
+const WeekData = ({ data, index }) => {
+  const { day } = data;
+  console.log(day);
+  const indexDay = new Date(data.date);
+  const currentDayOfWeek = indexDay.getDay();
+  console.log(dayOfWeek(currentDayOfWeek + 1));
   return (
-    <div className="h-1/4 mx-auto bg-white w-11/12 flex justify-around items-center ">
-      <div>
-        <img src={forecast.forecastday[1].day.condition.icon} />
+    <div className="h-28 mx-auto bg-white w-11/12 flex justify-around items-center rounded-md shadow-md mt-3">
+      <p>{dayOfWeek(currentDayOfWeek + 1).slice(0, 3)}</p>
+      <div className="border-r-2 border-blue-300">
+        <img className="pr-2" src={day.condition.icon} />
       </div>
       <div>
-        <p>{forecast.forecastday[0].day.maxtemp_f} °F</p>
-        <p>{forecast.forecastday[0].day.mintemp_f} °F</p>
+        <p>H: {day.maxtemp_f} °F</p>
+        <p>L: {day.mintemp_f} °F</p>
       </div>
     </div>
   );

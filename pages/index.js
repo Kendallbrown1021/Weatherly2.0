@@ -43,8 +43,9 @@ export default function Home() {
   };
   console.log(cityData);
   console.log(weekData);
+
   return (
-    <div className=" min-h-screen p-3 bg-blue-100">
+    <div className=" h-full p-3 bg-blue-100">
       <Head>
         <title>Weatherly 2.0</title>
         <link rel="icon" href="/favicon.ico" />
@@ -58,37 +59,47 @@ export default function Home() {
 
       <main className="h-screen  m-1 rounded-xl p-3 flex-col font-roboto ">
         <div className=" h-2/5 bg-blue-400 rounded-md shadow-md mb-5 ">
-          <form className="relative" onSubmit={submitHandler}>
-            <input
-              type="text"
-              className="mt-3  p-2  ml-10 rounded-md shadow-md text-center placeholder-blue-700 placeholder-opacity-50 focus:placeholder-transparent focus:outline-none text-blue-400"
-              placeholder="Enter City"
-              onChange={(event) => setCityName(event.target.value)}
-            />
-            <button
-              type="submit"
-              className="relative left-2 bg-white w-10 h-10 rounded-md shadow-sm"
+          <div className="w-11/12 mx-auto pt-4 h-full">
+            <form
+              className=" flex justify-center items-center"
+              onSubmit={submitHandler}
             >
-              <FontAwesomeIcon icon={faArrowRight} />
-            </button>
-          </form>
-          {!weekData ? (
-            <h1 className=" text-center bg-white p-1 w-4/6 h-1/4 rounded-md mt-3  ml-10 shadow-lg  align-middle text-2xl  ">
-              {" "}
-              Please enter <br /> a city
-            </h1>
-          ) : (
-            <CurrentCityData data={weekData} />
-          )}
+              <input
+                type="text"
+                className=" p-2 w-2/4 mr-4 rounded-md shadow-md text-center placeholder-blue-700 placeholder-opacity-50 focus:placeholder-transparent focus:outline-none text-blue-400"
+                placeholder="Enter City"
+                onChange={(event) => setCityName(event.target.value)}
+              />
+              <button
+                type="submit"
+                className="  bg-white w-10 h-10 rounded-md shadow-sm"
+              >
+                <FontAwesomeIcon icon={faArrowRight} />
+              </button>
+            </form>
+            <div className="mt-3 mx-auto text-center  w-11/12 h-1/4">
+              {!weekData ? (
+                <h1 className=" bg-white p-1 w-5/6 mx-auto rounded-md  shadow-lg  align-middle text-2xl  ">
+                  {" "}
+                  Please enter <br /> a city
+                </h1>
+              ) : (
+                <CurrentCityData data={weekData} />
+              )}
+            </div>
+          </div>
         </div>
-        <div className="h-3/5 bg-blue-400 p-3 rounded-md shadow-md">
+
+        <div className="h-4/6 bg-blue-400 pt-3 pb-4 rounded-md shadow-md">
           {!weekData ? (
             <h1 className="bg-white p-5 w-4/6 rounded-md  mx-auto  text-center shadow-lg   ">
               {" "}
               No Data Available
             </h1>
           ) : (
-            <WeekData data={weekData} />
+            weekData.data.forecast.forecastday
+              .map((day, index) => <WeekData data={day} key={index} />)
+              .slice(1)
           )}
         </div>
       </main>
