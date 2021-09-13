@@ -7,7 +7,7 @@ const WeekData = ({ data, index }) => {
   const currentDayOfWeek = indexDay.getDay();
   console.log(dayOfWeek(currentDayOfWeek + 1));
   return (
-    <div className="h-28 mx-auto bg-white w-11/12 flex justify-around items-center rounded-md shadow-md mt-3">
+    <div className="h-24 mx-auto bg-white w-11/12 flex justify-around items-center rounded-md shadow-md mt-3">
       <p>{dayOfWeek(currentDayOfWeek + 1).slice(0, 3)}</p>
       <div className="border-r-2 border-blue-300">
         <img className="pr-2" src={day.condition.icon} />

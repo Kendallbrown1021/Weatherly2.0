@@ -59,7 +59,7 @@ export default function Home() {
 
       <main className="h-screen  m-1 rounded-xl p-3 flex-col font-roboto ">
         <div className=" h-2/5 bg-blue-400 rounded-md shadow-md mb-5 ">
-          <div className="w-11/12 mx-auto pt-4 h-full">
+          <div className="w-11/12 mx-auto pt-4 h-64">
             <form
               className=" flex justify-center items-center"
               onSubmit={submitHandler}
@@ -90,7 +90,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="h-4/6 bg-blue-400 pt-3 pb-4 rounded-md shadow-md">
+        <div className="h-3/5 bg-blue-400 pt-3 pb-4 rounded-md shadow-md">
           {!weekData ? (
             <h1 className="bg-white p-5 w-4/6 rounded-md  mx-auto  text-center shadow-lg   ">
               {" "}
